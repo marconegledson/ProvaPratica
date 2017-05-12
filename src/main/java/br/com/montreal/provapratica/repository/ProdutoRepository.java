@@ -19,7 +19,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>{
 	@Query("Select p From Produto p Inner Join Fetch p.imagens Where p.id = :idProduto")
 	public Produto findFetchedById(@Param("idProduto") Long idProduto);
 	
-	@Query("Select p From Produto p Where p.produto.id = :idProdutoPai")
+	@Query("Select p From Produto p Where p.produtoPai.id = :idProdutoPai")
 	public List<Produto> findChildrenProdutosByIdProdutoPai(@Param("idProdutoPai") Long idProdutoPai);
 	
 	@Query("Select i From Imagem i Where i.produto.id = :idProduto")
