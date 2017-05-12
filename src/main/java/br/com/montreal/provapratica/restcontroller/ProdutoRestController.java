@@ -21,6 +21,7 @@ import br.com.montreal.provapratica.service.ProdutoService;
 @RequestMapping(value = "/api/produto")
 public class ProdutoRestController {
 
+	private static final String PRODUTO_NOT_FOUND = "Produto nao encontrado";
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoRestController.class);
 
 	@Autowired
@@ -38,7 +39,7 @@ public class ProdutoRestController {
 		LOGGER.debug(">> restGet {}", idProduto);
 		Produto produto = produtoService.findById(idProduto);
 		LOGGER.debug("<< restGet {}", produto);
-		return produto == null ? new ResponseEntity<>("Produto nao encontrado", HttpStatus.NOT_FOUND) : new ResponseEntity<>(produto, HttpStatus.OK);
+		return produto == null ? new ResponseEntity<>(PRODUTO_NOT_FOUND, HttpStatus.NOT_FOUND) : new ResponseEntity<>(produto, HttpStatus.OK);
 	}
 
 	/**
@@ -49,11 +50,11 @@ public class ProdutoRestController {
 	 * @return O produto contendo o relacionamento da imagem
 	 */
 	@RequestMapping(value = "/imagem/{idProduto}", method = RequestMethod.GET)
-	public @ResponseBody Produto restImagemGet(@PathVariable(name = "idProduto", required = true) Long idProduto) {
+	public  ResponseEntity<?> restImagemGet(@PathVariable(name = "idProduto", required = true) Long idProduto) {
 		LOGGER.debug(">> restImagemGet {}", idProduto);
 		Produto produto = produtoService.findFetchedById(idProduto);
 		LOGGER.debug("<< restImagemGet {}", produto);
-		return produto;
+		return produto == null ? new ResponseEntity<>(PRODUTO_NOT_FOUND, HttpStatus.NOT_FOUND) : new ResponseEntity<>(produto, HttpStatus.OK);
 	}
 
 	/**

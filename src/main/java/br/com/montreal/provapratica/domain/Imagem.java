@@ -7,12 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.montreal.provapratica.domain.enumerators.TipoImagem;
 
@@ -22,7 +22,6 @@ import br.com.montreal.provapratica.domain.enumerators.TipoImagem;
 public class Imagem implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idImagem")
 	private Long id;
 	
@@ -30,6 +29,7 @@ public class Imagem implements Serializable{
 	@Column(name = "tipo", length = 10)
 	private TipoImagem tipoImagem;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idProduto")
 	private Produto produto;
