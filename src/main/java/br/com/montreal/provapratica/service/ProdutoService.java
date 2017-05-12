@@ -23,6 +23,9 @@ public class ProdutoService implements ReadService<Produto>{
 	private ProdutoRepository produtoRepository;
 	
 	
+	/* (non-Javadoc)
+	 * @see br.com.montreal.provapratica.service.ReadService#findById(java.lang.Long)
+	 */
 	@Override
 	public Produto findById(Long id) {
 		LOGGER.debug(" >> findById [id={}] ", id);
@@ -38,6 +41,9 @@ public class ProdutoService implements ReadService<Produto>{
 		return produto;
 	}
 
+	/* (non-Javadoc)
+	 * @see br.com.montreal.provapratica.service.ReadService#findAll()
+	 */
 	@Override
 	public List<Produto> findAll() {
 		LOGGER.debug(" >> findAll");

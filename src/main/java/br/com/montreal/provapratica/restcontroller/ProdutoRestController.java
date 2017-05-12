@@ -28,15 +28,26 @@ public class ProdutoRestController {
 	/**
 	 * Retorna o produto pelo identificado
 	 * @param idProduto id do produto (obrigatorio)
-	 * @param fetched (boolean) caso true traz o relacionamento com a imagem
-	 * @return O produto contendo ou nao o relacionamento da imagem conforme o parametro {fetched}
+	 * @return O produto do id especificado sem relacionamento
 	 */
-	@RequestMapping(value = "/{idProduto}/{fetched}", method = RequestMethod.GET)
-	public @ResponseBody Produto restGet(	@PathVariable(name = "idProduto", required = true) Long idProduto, 
-											@PathVariable(name = "fetched", required = false) Boolean fetched) {
+	@RequestMapping(value = "/{idProduto}", method = RequestMethod.GET)
+	public @ResponseBody Produto restGet(	@PathVariable(name = "idProduto", required = true) Long idProduto) {
 		LOGGER.debug(">> restGet {}", idProduto);
-		Produto produto = fetched != null && fetched ? produtoService.findFetchedById(idProduto) : produtoService.findById(idProduto);
+		Produto produto = produtoService.findById(idProduto);
 		LOGGER.debug("<< restGet {}", produto);
+		return produto;
+	}
+	
+	/**
+	 * Retorna o produto pelo identificador junto com o relacionamento de imagem
+	 * @param idProduto id do produto (obrigatorio)
+	 * @return O produto contendo o relacionamento da imagem 
+	 */
+	@RequestMapping(value = "/imagem/{idProduto}", method = RequestMethod.GET)
+	public @ResponseBody Produto restImagemGet(	@PathVariable(name = "idProduto", required = true) Long idProduto) {
+		LOGGER.debug(">> restImagemGet {}", idProduto);
+		Produto produto = produtoService.findFetchedById(idProduto);
+		LOGGER.debug("<< restImagemGet {}", produto);
 		return produto;
 	}
 
