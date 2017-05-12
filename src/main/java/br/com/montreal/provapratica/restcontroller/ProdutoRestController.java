@@ -32,7 +32,7 @@ public class ProdutoRestController {
 	 * 
 	 * @param idProduto
 	 *            id do produto (obrigatorio)
-	 * @return O produto do id especificado sem relacionamento
+	 * @return ResponseEntity contendo o httpstatus 200 ou 404 se encontrado. Para 200 retorna os dados da entidade para 404 uma string de aviso
 	 */
 	@RequestMapping(value = "/{idProduto}", method = RequestMethod.GET)
 	public ResponseEntity<?> restGet(@PathVariable(name = "idProduto", required = true) Long idProduto) {
@@ -47,7 +47,7 @@ public class ProdutoRestController {
 	 * 
 	 * @param idProduto
 	 *            id do produto (obrigatorio)
-	 * @return O produto contendo o relacionamento da imagem
+	 * @return ResponseEntity contendo o httpstatus 200 ou 404 se encontrado. Para 200 retorna os dados da entidade para 404 uma string de aviso
 	 */
 	@RequestMapping(value = "/imagem/{idProduto}", method = RequestMethod.GET)
 	public  ResponseEntity<?> restImagemGet(@PathVariable(name = "idProduto", required = true) Long idProduto) {
