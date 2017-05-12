@@ -72,10 +72,15 @@ O propósito do projeto é ser um rest de leitura que será consumido por qualqu
 
 #### Instalation and Configuration
 
-O Projeto não requer muito.  
+Para a instação o Projeto não requer muito.  
 1. A Maven project >= 3.2 
+2. Clonar o projeto e executar utilizando o comando **mvn spring-boot:run**.
+3. Abrir o browser e realizar as chamadas da api contidas nos **Exemplos de utilizacao**
 
-e clonar o projeto e executar.
+Para executar os testes.
+Para a instação o Projeto não requer muito.  
+1. A Maven project >= 3.2 
+2. Clonar o projeto e executar utilizando o comando **mvn test**.
 
 **Sobre a configuração**: o arquivo application.properties file tem linhas comentadas sobre a configuração do log.
 Para melhor performance, os logs estao comentados e podem ser ativados.
