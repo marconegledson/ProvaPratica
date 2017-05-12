@@ -8,7 +8,7 @@ Projeto com exemplos de utilização de **rest** utilizando spring boot
 
 #### Exemplos
 Este projeto representa um exemplo simples
-A classe de rest controller invoca os métodos da classe de serviço com o objeto de ser **simples, bonito e possuir boa manutenabilidade**.
+A classe de rest controller invoca os métodos da classe de serviço com o objetivo de ser **simples, bonito e possuir boa manutenabilidade**.
 For example:
 
 rest controller:
@@ -16,15 +16,17 @@ rest controller:
 ```java
 	/**
 	 * Retorna o produto pelo identificado
-	 * @param idProduto id do produto (obrigatorio)
-	 * @return O produto do id especificado sem relacionamento
+	 * 
+	 * @param idProduto
+	 *            id do produto (obrigatorio)
+	 * @return ResponseEntity contendo o httpstatus 200 ou 404 se encontrado. Para 200 retorna os dados da entidade para 404 uma string de aviso
 	 */
 	@RequestMapping(value = "/{idProduto}", method = RequestMethod.GET)
-	public @ResponseBody Produto restGet(	@PathVariable(name = "idProduto", required = true) Long idProduto) {
+	public ResponseEntity<?> restGet(@PathVariable(name = "idProduto", required = true) Long idProduto) {
 		LOGGER.debug(">> restGet {}", idProduto);
 		Produto produto = produtoService.findById(idProduto);
 		LOGGER.debug("<< restGet {}", produto);
-		return produto;
+		return produto == null ? new ResponseEntity<>(PRODUTO_NOT_FOUND, HttpStatus.NOT_FOUND) : new ResponseEntity<>(produto, HttpStatus.OK);
 	}
 ```
 
