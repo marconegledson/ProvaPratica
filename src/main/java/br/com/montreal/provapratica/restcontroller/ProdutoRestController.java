@@ -64,6 +64,18 @@ public class ProdutoRestController {
 	}
 	
 	/**
+	 * Retorna todos os produtos com o relacionamento com imagem
+	 * @return Collecao contendo todos os produtos
+	 */
+	@RequestMapping(value = "/imagem", method = RequestMethod.GET)
+	public @ResponseBody List<Produto> resImagemtList() {
+		LOGGER.debug(">> restList");
+		List<Produto> produtos =  produtoService.findFetchedAll();
+		LOGGER.debug("<< restList {}", produtos);
+		return produtos;
+	}
+	
+	/**
 	 * Retorna todos os produtos que estao relacionados a um produto pai
 	 * @param idProdutoPai o id do produto pai (obrigatorio)
 	 * @return A collecao de produtos que estao relacionados a um produto pai

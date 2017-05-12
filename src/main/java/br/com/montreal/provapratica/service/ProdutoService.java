@@ -112,6 +112,24 @@ public class ProdutoService implements ReadService<Produto>{
 		}
 		return imagens;
 	}
+
+	/**
+	 * Busca por todos os produtos com a imagem
+	 * @return retorna todos os produtos com as suas imagens
+	 */
+	public List<Produto> findFetchedAll() {
+		LOGGER.debug(" >> findAll");
+		List<Produto> produtos = new ArrayList<>();
+		try {
+			produtos = produtoRepository.findFetchedAll();
+		} catch (Exception e) {
+			LOGGER.error("Falha ao buscar os produtos ", e);
+		} finally {
+			LOGGER.debug(" << findAll");
+		}
+		
+		return produtos;
+	}
 	
 	
 
