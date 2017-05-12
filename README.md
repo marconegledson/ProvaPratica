@@ -63,12 +63,12 @@ A entidade Produto possui:
 O propósito do projeto é ser um rest de leitura que será consumido por qualquer cliente. Exemplos das chamadas:
 
 
-**http://localhost:8080/ProvaPraticaApplication/api/produto/1**  Traz o produto por um determinado id
-**http://localhost:8080/ProvaPraticaApplication/api/produto/imagem/1/**  Traz o produto por um determinado id com o relacionamento com imagem 
-**http://localhost:8080/ProvaPraticaApplication/api/produto/**  Traz todos os produtos 
-**http://localhost:8080/ProvaPraticaApplication/api/produto/imagem**  Traz todos os produtos com relacionamento da imagem 
-**http://localhost:8080/ProvaPraticaApplication/api/produto/getAllByProdutoPai/1**  Retorna todos os produtos que estao relacionados a um produto pai 
-**http://localhost:8080/ProvaPraticaApplication/api/produto//imagens/{idProduto}**  Traz todas as imagens relacionadas a um produto 
+**http://localhost:8080/ProvaPraticaApplication/api/produto/1**  Traz o produto por um determinado id  
+**http://localhost:8080/ProvaPraticaApplication/api/produto/imagem/1/**  Traz o produto por um determinado id com o relacionamento com imagem  
+**http://localhost:8080/ProvaPraticaApplication/api/produto/**  Traz todos os produtos  
+**http://localhost:8080/ProvaPraticaApplication/api/produto/imagem**  Traz todos os produtos com relacionamento da imagem  
+**http://localhost:8080/ProvaPraticaApplication/api/produto/getAllByProdutoPai/1**  Retorna todos os produtos que estao relacionados a um produto pai  
+**http://localhost:8080/ProvaPraticaApplication/api/produto//imagens/{idProduto}**  Traz todas as imagens relacionadas a um produto  
 
 #### Instalation and Configuration
 
