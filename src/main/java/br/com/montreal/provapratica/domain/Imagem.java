@@ -1,0 +1,62 @@
+package br.com.montreal.provapratica.domain;
+
+import java.io.Serializable;
+
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import br.com.montreal.provapratica.domain.enumerators.TipoImagem;
+
+@Entity
+@Table(name = "produto")
+@SuppressWarnings("serial")
+public class Imagem implements Serializable{
+	
+	@Id
+	@Generated(value = { "" })
+	@Column(name = "idImagem")
+	private Long id;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo")
+	private TipoImagem tipoImagem;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(columnDefinition = "idProduto")
+	private Produto produto;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public TipoImagem getTipoImagem() {
+		return tipoImagem;
+	}
+
+	public void setTipoImagem(TipoImagem tipoImagem) {
+		this.tipoImagem = tipoImagem;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+	
+	
+	
+}

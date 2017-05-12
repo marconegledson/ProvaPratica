@@ -1,0 +1,89 @@
+package br.com.montreal.provapratica.domain;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
+@Table(name = "produto")
+@SuppressWarnings("serial")
+public class Produto implements Serializable {
+
+	@Id
+	@Generated(value = { "" })
+	@Column(name = "idProduto")
+	private Long id;
+
+	@NotBlank
+	@Column(name = "nome", length = 25)
+	private String nome;
+
+	@Column(name = "descricao", length = 100)
+	private String descricao;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(columnDefinition = "idProdutoPai")
+	private Produto produtoPai;
+
+	@OneToMany(targetEntity = Imagem.class)
+	private List<Imagem> imagens = new ArrayList<>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public List<Imagem> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<Imagem> imagens) {
+		this.imagens = imagens;
+	}
+
+	public Produto getProdutoPai() {
+		return produtoPai;
+	}
+
+	public void setProdutoPai(Produto produtoPai) {
+		this.produtoPai = produtoPai;
+	}
+
+	@Override
+	public String toString() {
+		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", produtoPai=" + produtoPai
+				+ ", imagens=" + imagens + "]";
+	}
+
+}
