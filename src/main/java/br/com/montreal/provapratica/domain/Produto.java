@@ -17,9 +17,12 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "produto")
 @SuppressWarnings("serial")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Produto implements Serializable {
 
 	@Id
@@ -35,10 +38,10 @@ public class Produto implements Serializable {
 	private String descricao;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(columnDefinition = "idProdutoPai")
+	@JoinColumn(name = "idProdutoPai")
 	private Produto produtoPai;
 
-	@OneToMany(targetEntity = Imagem.class)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", targetEntity = Imagem.class)
 	private List<Imagem> imagens = new ArrayList<>();
 
 	public Long getId() {
@@ -65,14 +68,6 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public List<Imagem> getImagens() {
-		return imagens;
-	}
-
-	public void setImagens(List<Imagem> imagens) {
-		this.imagens = imagens;
-	}
-
 	public Produto getProdutoPai() {
 		return produtoPai;
 	}
@@ -81,10 +76,19 @@ public class Produto implements Serializable {
 		this.produtoPai = produtoPai;
 	}
 
+	public List<Imagem> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<Imagem> imagens) {
+		this.imagens = imagens;
+	}
+
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", produtoPai=" + produtoPai
-				+ ", imagens=" + imagens + "]";
+		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", produtoPai=" + produtoPai + ", imagens=" + imagens + "]";
 	}
+
+	
 
 }

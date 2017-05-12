@@ -27,11 +27,11 @@ public class Imagem implements Serializable{
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo")
+	@Column(name = "tipo", length = 10)
 	private TipoImagem tipoImagem;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(columnDefinition = "idProduto")
+	@JoinColumn(name = "idProduto")
 	private Produto produto;
 
 	public Long getId() {
@@ -57,7 +57,9 @@ public class Imagem implements Serializable{
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Imagem [id=" + id + ", tipoImagem=" + tipoImagem + ", produto=" + produto + "]";
+	}
 }
