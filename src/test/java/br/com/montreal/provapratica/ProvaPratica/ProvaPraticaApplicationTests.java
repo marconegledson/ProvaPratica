@@ -43,6 +43,13 @@ public class ProvaPraticaApplicationTests {
 
 	}
 	
+	@Test
+	public void contextNoExists() {
+		get("/api/produto/100").then().statusCode(404).and().contentType(ContentType.TEXT);
+		get("/api/produto/imagem/100").then().statusCode(404).and().contentType(ContentType.TEXT);
+
+	}
+	
 	/**
 	 * 1. Test Recuperar todos os Produtos excluindo os relacionamentos;
 	 */
