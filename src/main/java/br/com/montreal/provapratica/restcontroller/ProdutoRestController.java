@@ -22,38 +22,58 @@ public class ProdutoRestController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoRestController.class);
 	
 	@Autowired
-	private ProdutoService service;
+	private ProdutoService produtoService;
 	
 	
+	/**
+	 * Retorna o produto pelo identificado
+	 * @param idProduto id do produto (obrigatorio)
+	 * @param fetched (boolean) caso true traz o relacionamento com a imagem
+	 * @return O produto contendo ou nao o relacionamento da imagem conforme o parametro {fetched}
+	 */
 	@RequestMapping(value = "/{idProduto}/{fetched}", method = RequestMethod.GET)
 	public @ResponseBody Produto restGet(	@PathVariable(name = "idProduto", required = true) Long idProduto, 
 											@PathVariable(name = "fetched", required = false) Boolean fetched) {
 		LOGGER.debug(">> restGet {}", idProduto);
-		Produto produto = fetched != null && fetched ? service.findFetchedById(idProduto) : service.findById(idProduto);
+		Produto produto = fetched != null && fetched ? produtoService.findFetchedById(idProduto) : produtoService.findById(idProduto);
 		LOGGER.debug("<< restGet {}", produto);
 		return produto;
 	}
 
+	/**
+	 * Retorna todos os produtos 
+	 * @return Collecao contendo todos os produtos
+	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public @ResponseBody List<Produto> restList() {
 		LOGGER.debug(">> restList");
-		List<Produto> produtos =  service.findAll();
+		List<Produto> produtos =  produtoService.findAll();
 		LOGGER.debug("<< restList {}", produtos);
 		return produtos;
 	}
 	
+	/**
+	 * Retorna todos os produtos que estao relacionados a um produto pai
+	 * @param idProdutoPai o id do produto pai (obrigatorio)
+	 * @return A collecao de produtos que estao relacionados a um produto pai
+	 */
 	@RequestMapping(value = "/getAllByProdutoPai/{idProdutoPai}", method = RequestMethod.GET)
 	public @ResponseBody List<Produto> restGetByProdutoPai(@PathVariable(name = "idProdutoPai", required = true) Long idProdutoPai) {
 		LOGGER.debug(">> restGetByProdutoPai {}", idProdutoPai);
-		List<Produto> produtos = service.findChildrenProdutosByIdProdutoPai(idProdutoPai);
+		List<Produto> produtos = produtoService.findChildrenProdutosByIdProdutoPai(idProdutoPai);
 		LOGGER.debug("<< restGetByProdutoPai {}", produtos);
 		return produtos;
 	}
 	
+	/**
+	 * Retorna todas as imagens relacionadas a um produto
+	 * @param idProduto id do produto (obrigatorio)
+	 * @return A collecao de imagens que estao relacionados a um produto
+	 */
 	@RequestMapping(value = "/imagens/{idProduto}", method = RequestMethod.GET)
 	public @ResponseBody List<Imagem> restImagemListByIdProduto(@PathVariable(name = "idProduto", required = true) Long idProduto) {
 		LOGGER.debug(">> restImagemListByIdProduto {}", idProduto);
-		List<Imagem> imagens = service.findImagensByIdProduto(idProduto);
+		List<Imagem> imagens = produtoService.findImagensByIdProduto(idProduto);
 		LOGGER.debug("<< restImagemListByIdProduto {}", imagens);
 		return imagens;
 	}

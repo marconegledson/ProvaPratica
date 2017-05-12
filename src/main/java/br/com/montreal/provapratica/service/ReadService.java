@@ -2,7 +2,7 @@ package br.com.montreal.provapratica.service;
 
 import java.util.List;
 
-public interface CrudService<T> {
+public interface ReadService<T> {
 
 	/**
 	 * Faz a pesquisa utilizando o id que representa a classe
