@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import br.com.montreal.provapratica.domain.enumerators.TipoImagem;
 
 @Entity
-@Table(name = "produto")
+@Table(name = "imagem")
 @SuppressWarnings("serial")
 public class Imagem implements Serializable{
 	
