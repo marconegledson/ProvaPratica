@@ -2,12 +2,13 @@ package br.com.montreal.provapratica.domain;
 
 import java.io.Serializable;
 
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,7 +22,7 @@ import br.com.montreal.provapratica.domain.enumerators.TipoImagem;
 public class Imagem implements Serializable{
 	
 	@Id
-	@Generated(value = { "" })
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idImagem")
 	private Long id;
 	
