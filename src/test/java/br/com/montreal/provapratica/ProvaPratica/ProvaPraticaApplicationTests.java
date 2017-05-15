@@ -38,19 +38,19 @@ public class ProvaPraticaApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		get("/api/produto/").then().statusCode(200).and().body("nome", not(empty()));
-		get("/api/produto/imagem/").then().statusCode(200);
-		get("/api/produto/1").then().statusCode(200);
-		get("/api/produto/imagem/1").then().statusCode(200);
-		get("/api/produto/getAllByProdutoPai/1").then().statusCode(200);
-		get("/api/produto/imagens/1").then().statusCode(200).and();
+		get("/api/produto/").then().statusCode(200).and().contentType(ContentType.JSON).and().body("nome", not(empty()));
+		get("/api/produto/imagem/").then().statusCode(200).and().contentType(ContentType.JSON);
+		get("/api/produto/1").then().statusCode(200).and().contentType(ContentType.JSON);
+		get("/api/produto/imagem/1").then().statusCode(200).and().contentType(ContentType.JSON);
+		get("/api/produto/getAllByProdutoPai/1").then().statusCode(200).and().contentType(ContentType.JSON);
+		get("/api/produto/imagens/1").then().statusCode(200).and().contentType(ContentType.JSON);
 
 	}
 	
 	@Test
 	public void contextNoExists() {
-		get("/api/produto/100").then().statusCode(404).and().contentType(ContentType.TEXT);
-		get("/api/produto/imagem/100").then().statusCode(404).and().contentType(ContentType.TEXT);
+		get("/api/produto/100").then().statusCode(404).and().contentType(ContentType.JSON);
+		get("/api/produto/imagem/100").then().statusCode(404).and().contentType(ContentType.JSON);
 
 	}
 	
