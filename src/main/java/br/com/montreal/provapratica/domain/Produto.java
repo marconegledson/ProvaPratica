@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "produto")
 @SuppressWarnings("serial")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonFilter("Produto") 
+@JsonFilter("Produto")
 public class Produto implements Serializable {
 
 	@Id
