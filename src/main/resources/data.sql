@@ -1,3 +1,6 @@
+DELETE FROM imagem;
+DELETE FROM produto;
+
 INSERT INTO produto  VALUES (1, 'Esponja', 'Esponja para panela', NULL);
 INSERT INTO produto  VALUES (2, 'Leite', ' Leite desnatado', NULL);
 INSERT INTO produto  VALUES (3, 'Leite integral', 'Leite integral', 2);

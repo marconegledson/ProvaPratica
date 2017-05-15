@@ -14,12 +14,6 @@ import br.com.montreal.provapratica.domain.Produto;
 public interface ProdutoRepository extends JpaRepository<Produto, Long>{
 	
 	@Query("Select p From Produto p Left Join Fetch p.imagens")
-	public List<Produto> findAll();
-	
-	@Query("Select p From Produto p Left Join Fetch p.imagens")
-	public List<Produto> findId();
-	
-	@Query("Select p From Produto p Left Join Fetch p.imagens")
 	public List<Produto> findFetchedAll();
 	
 	@Query("Select p From Produto p Left Join Fetch p.imagens Left Join Fetch p.produtoPai Where p.id = :idProduto")

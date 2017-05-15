@@ -15,12 +15,14 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "produto")
 @SuppressWarnings("serial")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonFilter("Produto") 
 public class Produto implements Serializable {
 
 	@Id

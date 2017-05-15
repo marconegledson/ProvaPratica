@@ -31,7 +31,7 @@ public class ProdutoService implements ReadService<Produto>{
 		LOGGER.debug(" >> findById [id={}] ", id);
 		Produto produto = null;
 		try {
-			produto =  produtoRepository.findOne(id);
+			produto =  produtoRepository.getOne(id);
 		} catch(Exception e){
 			LOGGER.error("Falha ao buscar o produto ", e);
 		} finally {
