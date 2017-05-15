@@ -2,6 +2,9 @@ package br.com.montreal.provapratica.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,15 +69,15 @@ public class ProdutoService implements ReadService<Produto>{
 	 */
 	public Produto findFetchedById(Long idProduto){
 		LOGGER.debug(" >> findFetchedById [id={}] ", idProduto);
-		Produto produto = null;
+		Optional<Produto> produto = null;
 		try {
-			produto =  produtoRepository.findFetchedById(idProduto);
+			produto = Optional.ofNullable(produtoRepository.findFetchedById(idProduto));
 		} catch(Exception e){
 			LOGGER.error("Falha ao buscar o produto ", e);
 		} finally {
 			LOGGER.debug(" << findFetchedById");
 		}
-		return produto;
+		return produto.orElseThrow(() -> new EntityNotFoundException());
 	}
 	
 	/**
