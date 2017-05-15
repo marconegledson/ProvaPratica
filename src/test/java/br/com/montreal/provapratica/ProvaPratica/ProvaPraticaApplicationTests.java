@@ -39,7 +39,7 @@ public class ProvaPraticaApplicationTests {
 	}
 
 	@Test
-	public void contextLoads() {
+	public void testStatusCodeOk() {
 		get("/api/produto/").then().statusCode(200).and().contentType(ContentType.JSON).and().body("nome", not(empty()));
 		get("/api/produto/imagem/").then().statusCode(200).and().contentType(ContentType.JSON);
 		get("/api/produto/1").then().statusCode(200).and().contentType(ContentType.JSON);
@@ -50,7 +50,7 @@ public class ProvaPraticaApplicationTests {
 	}
 	
 	@Test
-	public void contextNoExists() {
+	public void testStatusCodeNotFound() {
 		get("/api/produto/100").then().statusCode(404).and().contentType(ContentType.JSON);
 		get("/api/produto/imagem/100").then().statusCode(404).and().contentType(ContentType.JSON);
 
@@ -60,7 +60,7 @@ public class ProvaPraticaApplicationTests {
 	 * 1. Test Recuperar todos os Produtos excluindo os relacionamentos;
 	 */
 	@Test
-	public void checkAllProdutosNoRelationship() {
+	public void testCheckAllProdutosNoRelationship() {
 		get("/api/produto/").then().body(not(hasKey("imagens")));
 		get("/api/produto/").then().body(not(hasKey("produtoPai")));
 	}
@@ -69,9 +69,9 @@ public class ProvaPraticaApplicationTests {
 	 * 2. Recuperar todos os Produtos incluindo um relacionamento específico Imagem;
 	 */
 	@Test
-	public void checkAllProdutosWithRelationship() {
-		get("/api/produto/imagem/").then().body(hasKey("imagens"));
-		List<?> imagens = get("/api/produto/imagem/").getBody().jsonPath().getList("imagens", List.class);
+	public void testCheckAllProdutosWithRelationship() {
+		get("/api/produto/imagem/").then().body("nome", notNullValue()).and().body("id", notNullValue());
+		List<?> imagens = get("/api/produto/imagem").getBody().jsonPath().getList("imagens", List.class);
 		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
 	    assertThat(imagens, everyItem(hasProperty("tipoImagem", notNullValue())));
 	}
@@ -81,7 +81,7 @@ public class ProvaPraticaApplicationTests {
 	 * 3. Igual ao no 1 utilizando um id de produto específico;
 	 */
 	@Test
-	public void checkByIdProdutoNoRelationship() {
+	public void testCheckByIdProdutoNoRelationship() {
 		get("/api/produto/1").then().body(not(hasKey("imagens")));
 	}
 	
@@ -89,18 +89,18 @@ public class ProvaPraticaApplicationTests {
 	 * 4. Igual ao no 2 utilizando um id de produto específico;
 	 */
 	@Test
-	public void checkByIdProdutoWithRelationship() {
-		get("/api/produto/imagem/1").then().body(hasKey("imagens"));
-		List<?> imagens = get("/api/produto/imagem/").getBody().jsonPath().getList("imagens", List.class);
+	public void testCheckByIdProdutoWithRelationship() {
+		get("/api/produto/imagem/1").then().body("nome", notNullValue()).and().body("id", notNullValue());
+		List<Imagem> imagens = get("/api/produto/imagem/1").getBody().jsonPath().getList("imagens", Imagem.class);
 		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
-	    assertThat(imagens, everyItem(hasProperty("tipo", notNullValue())));
+	    assertThat(imagens, everyItem(hasProperty("tipoImagem", notNullValue())));
 	}
 	
 	/**
 	 * 5. Igual ao no 2 utilizando um id de produto específico;
 	 */
 	@Test
-	public void checkByIdProdutoPai() {
+	public void testCheckByIdProdutoPai() {
 		List<Produto> produtos = get("api/produto/getAllByProdutoPai/1").getBody().jsonPath().getList("produtos", Produto.class);
 		assertThat(produtos, everyItem(hasProperty("id", notNullValue())));
 	    assertThat(produtos, everyItem(hasProperty("nome", notNullValue())));
@@ -110,7 +110,7 @@ public class ProvaPraticaApplicationTests {
 	 * 6. Recupera a coleção de Imagens para um id de produto específico;
 	 */
 	@Test
-	public void checkImagensByIdProduto() {
+	public void testCheckImagensByIdProduto() {
 		List<Imagem> imagens = Arrays.asList(given().when().get("/api/produto/imagens/1").as(Imagem[].class));
 		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
 	    assertThat(imagens, everyItem(hasProperty("tipoImagem", notNullValue())));
