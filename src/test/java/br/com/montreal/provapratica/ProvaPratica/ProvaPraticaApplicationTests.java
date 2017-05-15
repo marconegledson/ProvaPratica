@@ -1,14 +1,16 @@
 package br.com.montreal.provapratica.ProvaPratica;
 
 import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -59,8 +61,8 @@ public class ProvaPraticaApplicationTests {
 	 */
 	@Test
 	public void checkAllProdutosNoRelationship() {
-		get("/api/produto/").then().body("imagens", is(empty()));
-		get("/api/produto/").then().body("produtoPai", is(empty()));
+		get("/api/produto/").then().body(not(hasKey("imagens")));
+		get("/api/produto/").then().body(not(hasKey("produtoPai")));
 	}
 	
 	/**
@@ -68,10 +70,10 @@ public class ProvaPraticaApplicationTests {
 	 */
 	@Test
 	public void checkAllProdutosWithRelationship() {
-		get("/api/produto/imagem/").then().body("imagens", is(not(empty())));
-		List<Imagem> imagens = get("/api/produto/imagem/").getBody().jsonPath().getList("imagens", Imagem.class);
+		get("/api/produto/imagem/").then().body(hasKey("imagens"));
+		List<?> imagens = get("/api/produto/imagem/").getBody().jsonPath().getList("imagens", List.class);
 		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
-	    assertThat(imagens, everyItem(hasProperty("tipo", notNullValue())));
+	    assertThat(imagens, everyItem(hasProperty("tipoImagem", notNullValue())));
 	}
 	
 	
@@ -80,7 +82,7 @@ public class ProvaPraticaApplicationTests {
 	 */
 	@Test
 	public void checkByIdProdutoNoRelationship() {
-		get("/api/produto/1").then().body("imagens", is(empty()));
+		get("/api/produto/1").then().body(not(hasKey("imagens")));
 	}
 	
 	/**
@@ -88,8 +90,8 @@ public class ProvaPraticaApplicationTests {
 	 */
 	@Test
 	public void checkByIdProdutoWithRelationship() {
-		get("/api/produto/imagem/1").then().body("imagens", is(not(empty())));
-		List<Imagem> imagens = get("/api/produto/imagem/").getBody().jsonPath().getList("imagens", Imagem.class);
+		get("/api/produto/imagem/1").then().body(hasKey("imagens"));
+		List<?> imagens = get("/api/produto/imagem/").getBody().jsonPath().getList("imagens", List.class);
 		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
 	    assertThat(imagens, everyItem(hasProperty("tipo", notNullValue())));
 	}
@@ -109,9 +111,9 @@ public class ProvaPraticaApplicationTests {
 	 */
 	@Test
 	public void checkImagensByIdProduto() {
-		List<Imagem> imagens = get("/api/produto/imagens/1").getBody().jsonPath().getList("imagens", Imagem.class);
+		List<Imagem> imagens = Arrays.asList(given().when().get("/api/produto/imagens/1").as(Imagem[].class));
 		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
-	    assertThat(imagens, everyItem(hasProperty("tipo", notNullValue())));
+	    assertThat(imagens, everyItem(hasProperty("tipoImagem", notNullValue())));
 	}
 	
 
