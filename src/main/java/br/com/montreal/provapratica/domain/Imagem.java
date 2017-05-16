@@ -13,8 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import br.com.montreal.provapratica.domain.enumerators.TipoImagem;
+import br.com.montreal.provapratica.json.viewer.View;
 
 @Entity
 @Table(name = "imagem")
@@ -23,10 +25,12 @@ public class Imagem implements Serializable{
 	
 	@Id
 	@Column(name = "idImagem")
+	@JsonView(View.Children.class)
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo", length = 10)
+	@JsonView(View.Children.class)
 	private TipoImagem tipoImagem;
 
 	@JsonIgnore

@@ -14,28 +14,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
 import br.com.montreal.provapratica.domain.Imagem;
 import br.com.montreal.provapratica.domain.Produto;
+import br.com.montreal.provapratica.json.viewer.View;
 import br.com.montreal.provapratica.service.ProdutoService;
 
 @RestController
 @RequestMapping(value = "/api/produto")
 public class ProdutoRestController {
 
-	private final SimpleFilterProvider filter = new SimpleFilterProvider();
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoRestController.class);
 
 	@Autowired
 	private ProdutoService produtoService;
 	
-	@Autowired
-    private ObjectMapper objectMapper;
-
 	/**
 	 * Retorna o produto pelo identificado
 	 * 
@@ -45,12 +40,12 @@ public class ProdutoRestController {
 	 * @throws JsonProcessingException 
 	 */
 	@RequestMapping(value = "/{idProduto}", method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@JsonView(View.Summary.class)
 	public ResponseEntity<?> restGet(@PathVariable(name = "idProduto", required = true) Long idProduto) throws JsonProcessingException {
 		LOGGER.debug(">> restGet {}", idProduto);
 		Produto produto = produtoService.findById(idProduto);
-		filter.addFilter("Produto", SimpleBeanPropertyFilter.serializeAllExcept("imagens", "produtoPai"));
 		LOGGER.debug("<< restGet {}", produto);
-		return new ResponseEntity<>(objectMapper.writer(filter).writeValueAsString(produto), HttpStatus.OK);
+		return new ResponseEntity<>(produto, HttpStatus.OK);
 	}
 
 	/**
@@ -62,12 +57,12 @@ public class ProdutoRestController {
 	 * @throws JsonProcessingException 
 	 */
 	@RequestMapping(value = "/imagem/{idProduto}", method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@JsonView(View.Children.class)
 	public  ResponseEntity<?> restImagemGet(@PathVariable(name = "idProduto", required = true) Long idProduto) throws JsonProcessingException {
 		LOGGER.debug(">> restImagemGet {}", idProduto);
 		Produto produto = produtoService.findFetchedById(idProduto);
-		filter.addFilter("Produto", SimpleBeanPropertyFilter.serializeAllExcept("produtoPai"));
 		LOGGER.debug("<< restImagemGet {}", produto);
-		return new ResponseEntity<>(objectMapper.writer(filter).writeValueAsString(produto), HttpStatus.OK);
+		return new ResponseEntity<>(produto, HttpStatus.OK);
 	}
 
 	/**
@@ -77,13 +72,12 @@ public class ProdutoRestController {
 	 * @throws JsonProcessingException 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@JsonView(View.Summary.class)
 	public ResponseEntity<?> restList() throws JsonProcessingException {
 		LOGGER.debug(">> restList");
 		List<Produto> produtos = produtoService.findAll();
-        filter.addFilter("Produto", SimpleBeanPropertyFilter.serializeAllExcept("imagens", "produtoPai"));
-        ResponseEntity<?> responseEntity =  new ResponseEntity<>(objectMapper.writer(filter).writeValueAsString(produtos), HttpStatus.OK);
         LOGGER.debug("<< restList {}", produtos);
-        return responseEntity;
+        return new ResponseEntity<>(produtos, HttpStatus.OK);
 	}
 
 	/**
@@ -93,13 +87,12 @@ public class ProdutoRestController {
 	 * @throws JsonProcessingException 
 	 */
 	@RequestMapping(value = "/imagem", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@JsonView(View.Children.class)
 	public ResponseEntity<?> resImagemtList() throws JsonProcessingException {
 		LOGGER.debug(">> restList");
 		List<Produto> produtos = produtoService.findFetchedAll();
-		filter.addFilter("Produto", SimpleBeanPropertyFilter.serializeAllExcept("produtoPai"));
-        ResponseEntity<?> responseEntity =  new ResponseEntity<>(objectMapper.writer(filter).writeValueAsString(produtos), HttpStatus.OK);
 		LOGGER.debug("<< restList {}", produtos);
-		return responseEntity;
+		return new ResponseEntity<>(produtos, HttpStatus.OK);
 	}
 
 	/**
@@ -111,12 +104,12 @@ public class ProdutoRestController {
 	 * @throws JsonProcessingException 
 	 */
 	@RequestMapping(value = "/getAllByProdutoPai/{idProdutoPai}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@JsonView(View.Summary.class)
 	public ResponseEntity<?> restGetByProdutoPai(@PathVariable(name = "idProdutoPai", required = true) Long idProdutoPai) throws JsonProcessingException {
 		LOGGER.debug(">> restGetByProdutoPai {}", idProdutoPai);
 		List<Produto> produtos = produtoService.findChildrenProdutosByIdProdutoPai(idProdutoPai);
-		filter.addFilter("Produto", SimpleBeanPropertyFilter.serializeAllExcept("imagens", "produtoPai"));
 		LOGGER.debug("<< restGetByProdutoPai {}", produtos);
-		return new ResponseEntity<>(objectMapper.writer(filter).writeValueAsString(produtos), HttpStatus.OK);
+		return new ResponseEntity<>(produtos, HttpStatus.OK);
 	}
 
 	/**

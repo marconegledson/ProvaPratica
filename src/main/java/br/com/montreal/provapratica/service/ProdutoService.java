@@ -32,16 +32,16 @@ public class ProdutoService implements ReadService<Produto>{
 	@Override
 	public Produto findById(Long id) {
 		LOGGER.debug(" >> findById [id={}] ", id);
-		Produto produto = null;
+		Optional<Produto> produto = null;
 		try {
-			produto =  produtoRepository.getOne(id);
+			produto = Optional.ofNullable(produtoRepository.findOne(id));
 		} catch(Exception e){
 			LOGGER.error("Falha ao buscar o produto ", e);
 		} finally {
 			LOGGER.debug(" << findById");
 		}
 		
-		return produto;
+		return produto.orElseThrow(() -> new EntityNotFoundException());
 	}
 
 	/* (non-Javadoc)

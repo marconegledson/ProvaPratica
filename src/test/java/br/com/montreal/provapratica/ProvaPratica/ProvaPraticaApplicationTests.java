@@ -70,10 +70,7 @@ public class ProvaPraticaApplicationTests {
 	 */
 	@Test
 	public void testCheckAllProdutosWithRelationship() {
-		get("/api/produto/imagem/").then().body("nome", notNullValue()).and().body("id", notNullValue());
-		List<?> imagens = get("/api/produto/imagem").getBody().jsonPath().getList("imagens", List.class);
-		assertThat(imagens, everyItem(hasProperty("id", notNullValue())));
-	    assertThat(imagens, everyItem(hasProperty("tipoImagem", notNullValue())));
+		get("/api/produto/imagem/").then().body("nome", notNullValue()).and().body("id", notNullValue()).and().body("imagens", notNullValue());
 	}
 	
 	

@@ -15,32 +15,38 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import br.com.montreal.provapratica.json.viewer.View;
 
 @Entity
 @Table(name = "produto")
 @SuppressWarnings("serial")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonFilter("Produto")
 public class Produto implements Serializable {
 
 	@Id
 	@Column(name = "idProduto")
+	@JsonView(View.Summary.class)
 	private Long id;
 
 	@NotBlank
 	@Column(name = "nome", length = 25)
+	@JsonView(View.Summary.class)
 	private String nome;
 
 	@Column(name = "descricao", length = 100)
+	@JsonView(View.Summary.class)
 	private String descricao;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idProdutoPai")
+	@JsonView(View.Father.class)
 	private Produto produtoPai;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", targetEntity = Imagem.class)
+	@JsonView(View.Children.class)
 	private List<Imagem> imagens = new ArrayList<>();
 
 	public Long getId() {
