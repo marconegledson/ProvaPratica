@@ -20,13 +20,15 @@ rest controller:
 	 * @param idProduto
 	 *            id do produto (obrigatorio)
 	 * @return ResponseEntity contendo o httpstatus 200 ou 404 se encontrado. Para 200 retorna os dados da entidade para 404 uma string de aviso
+	 * @throws JsonProcessingException 
 	 */
-	@RequestMapping(value = "/{idProduto}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{idProduto}", method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@JsonView(View.Summary.class)
 	public ResponseEntity<?> restGet(@PathVariable(name = "idProduto", required = true) Long idProduto) {
 		LOGGER.debug(">> restGet {}", idProduto);
 		Produto produto = produtoService.findById(idProduto);
 		LOGGER.debug("<< restGet {}", produto);
-		return produto == null ? new ResponseEntity<>(PRODUTO_NOT_FOUND, HttpStatus.NOT_FOUND) : new ResponseEntity<>(produto, HttpStatus.OK);
+		return new ResponseEntity<>(produto, HttpStatus.OK);
 	}
 ```
 
@@ -34,21 +36,21 @@ camada de serviço :
 
 ```java
 	/* (non-Javadoc)
-	 * @see br.com.montreal.provapratica.service.ReadService#findById(java.lang.Long)
+	 * @see br.com.montreal.provapratica.service.CrudService#findById(java.lang.Long)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Produto findById(Long id) {
 		LOGGER.debug(" >> findById [id={}] ", id);
-		Produto produto = null;
+		Optional<Produto> produto = null;
 		try {
-			produto =  produtoRepository.findOne(id);
+			produto = Optional.ofNullable(produtoRepository.findOne(id));
 		} catch(Exception e){
 			LOGGER.error("Falha ao buscar o produto ", e);
 		} finally {
 			LOGGER.debug(" << findById");
 		}
-		
-		return produto;
+		return produto.orElseThrow(() -> new EntityNotFoundException());
 	}
 ```
 

@@ -42,7 +42,6 @@ public class ProdutoService implements CrudService<Produto>{
 		} finally {
 			LOGGER.debug(" << findById");
 		}
-		
 		return produto.orElseThrow(() -> new EntityNotFoundException());
 	}
 
