@@ -4,13 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,6 +32,8 @@ public class Produto implements Serializable {
 
 	@Id
 	@Column(name = "idProduto")
+	@SequenceGenerator(name = "sequence", sequenceName = "produto_sequence", initialValue = 20)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
 	@JsonView(View.Summary.class)
 	private Long id;
 
@@ -45,7 +51,7 @@ public class Produto implements Serializable {
 	@JsonView(View.Father.class)
 	private Produto produtoPai;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", targetEntity = Imagem.class)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "produto", targetEntity = Imagem.class, cascade = CascadeType.ALL)
 	@JsonView(View.Children.class)
 	private List<Imagem> imagens = new ArrayList<>();
 

@@ -1,7 +1,7 @@
 package br.com.montreal.provapratica.ProvaPratica;
 
 import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
@@ -20,6 +20,9 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.montreal.provapratica.domain.Imagem;
 import br.com.montreal.provapratica.domain.Produto;
 import io.restassured.RestAssured;
@@ -29,6 +32,8 @@ import io.restassured.http.ContentType;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProvaPraticaApplicationTests {
 
+	private ObjectMapper mapper = new ObjectMapper();
+	
 	@LocalServerPort
 	private int port;
 	
@@ -36,6 +41,31 @@ public class ProvaPraticaApplicationTests {
 	public void init() {
 		RestAssured.baseURI = "http://localhost";
 		RestAssured.port = port;
+	}
+	
+	@Test
+	public void testCreate() throws JsonProcessingException{
+		Produto produto = new Produto();
+		Imagem imagem = new Imagem();
+		produto.setNome("Java RS");
+		produto.setDescricao("Java JAX-RS com springboot");
+		produto.setImagens(Arrays.asList(imagem));
+		given().contentType(ContentType.JSON).body(mapper.writeValueAsString(produto)).post("/api/produto/").then().statusCode(201);
+	}
+	
+	@Test
+	public void testUpdate() throws JsonProcessingException{
+		Produto produto = new Produto();
+		produto.setNome("Java RS");
+		produto.setDescricao("Java JAX-RS com springboot");
+		given().contentType(ContentType.JSON).body(mapper.writeValueAsString(produto)).put("/api/produto/{id}", 1).then().statusCode(200);
+		given().contentType(ContentType.JSON).body(mapper.writeValueAsString(produto)).put("/api/produto/{id}", 100).then().statusCode(404);
+	}
+	
+	@Test
+	public void testDelete(){
+		delete("/api/produto/{id}", 11).then().statusCode(200);
+		delete("/api/produto/{id}", 12).then().statusCode(404);
 	}
 
 	@Test

@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,6 +28,8 @@ public class Imagem implements Serializable{
 	
 	@Id
 	@Column(name = "idImagem")
+	@SequenceGenerator(name = "sequence", sequenceName = "imagem_sequence", initialValue = 30)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
 	@JsonView(View.Children.class)
 	private Long id;
 	

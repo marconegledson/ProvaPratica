@@ -8,8 +8,10 @@ import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.montreal.provapratica.domain.Imagem;
@@ -17,8 +19,7 @@ import br.com.montreal.provapratica.domain.Produto;
 import br.com.montreal.provapratica.repository.ProdutoRepository;
 
 @Service
-@Transactional(readOnly = true)
-public class ProdutoService implements ReadService<Produto>{
+public class ProdutoService implements CrudService<Produto>{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProdutoService.class);
 	
@@ -27,9 +28,10 @@ public class ProdutoService implements ReadService<Produto>{
 	
 	
 	/* (non-Javadoc)
-	 * @see br.com.montreal.provapratica.service.ReadService#findById(java.lang.Long)
+	 * @see br.com.montreal.provapratica.service.CrudService#findById(java.lang.Long)
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Produto findById(Long id) {
 		LOGGER.debug(" >> findById [id={}] ", id);
 		Optional<Produto> produto = null;
@@ -45,9 +47,10 @@ public class ProdutoService implements ReadService<Produto>{
 	}
 
 	/* (non-Javadoc)
-	 * @see br.com.montreal.provapratica.service.ReadService#findAll()
+	 * @see br.com.montreal.provapratica.service.CrudService#findAll()
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<Produto> findAll() {
 		LOGGER.debug(" >> findAll");
 		List<Produto> produtos = new ArrayList<>();
@@ -67,6 +70,7 @@ public class ProdutoService implements ReadService<Produto>{
 	 * @param idProduto a ser pesquisado
 	 * @return O objeto do produto
 	 */
+	@Transactional(readOnly = true)
 	public Produto findFetchedById(Long idProduto){
 		LOGGER.debug(" >> findFetchedById [id={}] ", idProduto);
 		Optional<Produto> produto = null;
@@ -85,6 +89,7 @@ public class ProdutoService implements ReadService<Produto>{
 	 * @param idProdutoPai a ser pesquisado
 	 * @return Uma colecao de projetos filhos
 	 */
+	@Transactional(readOnly = true)
 	public List<Produto> findChildrenProdutosByIdProdutoPai(Long idProdutoPai){
 		LOGGER.debug(" >> findChildrenProdutosByIdProdutoPai [id={}] ", idProdutoPai);
 		List<Produto> produtos = new ArrayList<>();
@@ -103,6 +108,7 @@ public class ProdutoService implements ReadService<Produto>{
 	 * @param idProduto a ser pesquisado
 	 * @return Uma colecao de imagens do produto
 	 */
+	@Transactional(readOnly = true)
 	public List<Imagem> findImagensByIdProduto(Long idProduto){
 		LOGGER.debug(" >> findImagensByIdProduto [id={}] ", idProduto);
 		List<Imagem> imagens = new ArrayList<>();
@@ -120,6 +126,7 @@ public class ProdutoService implements ReadService<Produto>{
 	 * Busca por todos os produtos com a imagem
 	 * @return retorna todos os produtos com as suas imagens
 	 */
+	@Transactional(readOnly = true)
 	public List<Produto> findFetchedAll() {
 		LOGGER.debug(" >> findAll");
 		List<Produto> produtos = new ArrayList<>();
@@ -133,6 +140,38 @@ public class ProdutoService implements ReadService<Produto>{
 		
 		return produtos;
 	}
+
+	
+	/* (non-Javadoc)
+	 * @see br.com.montreal.provapratica.service.CrudService#save(T)
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Produto save(Produto produto) {
+		return produtoRepository.saveAndFlush(produto);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.montreal.provapratica.service.CrudService#delete(java.lang.Long)
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		Produto entity = this.findById(id);
+		produtoRepository.delete(entity);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.montreal.provapratica.service.CrudService#update(java.lang.Object)
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Produto update(Produto produto) {
+		Produto entity = this.findById(produto.getId());
+		BeanUtils.copyProperties(produto, entity, new String[]{"id", "imagens", "produtoPai"});
+		return this.save(entity);
+	}
+
 	
 	
 
