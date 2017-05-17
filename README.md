@@ -57,9 +57,9 @@ camada de serviço :
 A organização do projeto está dividida.
 A entidade Produto possui:
 * A RestController : a classe ProdutoRestController usada para definir e criar a api rest.
-* A RestService : Uma interface usada para definir o contrato com a camada de serviço possuindo as consultas por id e todos
-* A ProdutoService : Classe de negocio utilizada para realizar o processamento, intermediando a chamada a base de dados e implementando a interface RestService
-* A ProdutoRepository : A interface  que  extende JpaRepository, para possuir as principais ações de crud e realizadar as pesquisa na base de dados
+* A CrudService : Uma interface usada para definir o contrato com a camada de serviço possuindo a implementação do CRUD
+* A ProdutoService : Classe de negocio utilizada para realizar o processamento, intermediando a chamada a base de dados e implementando a interface CrudService
+* A ProdutoRepository : A interface  que  extende JpaRepository, para possuir as principais ações de CRUD e realizadar as pesquisa na base de dados
 * O Produto : A entidade que representa a tabela no banco de dados
 
 #### Exemplos de utilizacao
