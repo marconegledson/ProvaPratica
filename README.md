@@ -67,12 +67,15 @@ A entidade Produto possui:
 O propósito do projeto é ser um rest de leitura que será consumido por qualquer cliente. Exemplos das chamadas:
 
 
-**http://localhost:8080/api/produto/1**  Traz o produto por um determinado id  
-**http://localhost:8080/api/produto/imagem/1**  Traz o produto por um determinado id com o relacionamento com imagem  
-**http://localhost:8080/api/produto/**  Traz todos os produtos  
-**http://localhost:8080/api/produto/imagem/**  Traz todos os produtos com relacionamento da imagem  
-**http://localhost:8080/api/produto/getAllByProdutoPai/1**  Retorna todos os produtos que estao relacionados a um produto pai  
-**http://localhost:8080/api/produto/imagens/1**  Traz todas as imagens relacionadas a um produto  
+**[GET] http://localhost:8080/api/produto/1**  Traz o produto por um determinado id  
+**[GET] http://localhost:8080/api/produto/imagem/1**  Traz o produto por um determinado id com o relacionamento com imagem  
+**[GET] http://localhost:8080/api/produto/**  Traz todos os produtos  
+**[GET] http://localhost:8080/api/produto/imagem/**  Traz todos os produtos com relacionamento da imagem  
+**[GET] http://localhost:8080/api/produto/getAllByProdutoPai/1**  Retorna todos os produtos que estao relacionados a um produto pai  
+**[GET] http://localhost:8080/api/produto/imagens/1**  Traz todas as imagens relacionadas a um produto  
+**[PUT] http://localhost:8080/api/produto/1**  Atualiza o produto de um determinado id com as informações de outro produto  
+**[POST] http://localhost:8080/api/produto/**  Insere um  novo produto  
+**[DELETE] http://localhost:8080/api/produto/1**  Remove o produto por um determinado id  
 
 #### Instalation and Configuration
 
